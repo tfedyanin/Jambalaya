@@ -20,7 +20,8 @@ public class Main {
         byte[] newData = new byte[data.length];
         System.arraycopy(data, 0, newData, 0, data.length);
         int res = 0;
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < newData.length; i++) {
+            newData[i] = (byte) (newData[i]>0 ? 1 : -1);
             res++;
         }
         return res;
