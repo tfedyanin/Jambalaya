@@ -1,0 +1,29 @@
+group 'com.ittim.jambalaya.little.jni'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+
+task genHeader(type: Exec) {
+    workingDir 'src/main/java'
+    def mainClass = 'jambalaya.jni.Main'
+    def nativeSrcPath = projectDir.toString() + '/../native_part'
+    commandLine 'cmd', '/c', 'javah', '-d', nativeSrcPath, '-cp', sourceSets.main.runtimeClasspath.asPath, mainClass
+}
+
+task execute(type:JavaExec) {
+    main = 'jambalaya.jni.Main'
+    systemProperty 'java.library.path', projectDir.toString() + '/libs/native'
+    classpath = sourceSets.main.runtimeClasspath
+}
